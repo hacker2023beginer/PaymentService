@@ -1,6 +1,5 @@
 package com.study.paymentservice.exception;
 
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +8,13 @@ import java.time.LocalDateTime;
 import java.util.Map;
 
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(RandomNumberClientException.class)
+    public ResponseEntity<?> handleNoConnectionWithRandomNumberApi(RandomNumberClientException ex) {
+        String message = ex.getMessage();
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(error(HttpStatus.FORBIDDEN, message));
+    }
 
     @ExceptionHandler(PaymentServiceException.class)
     public ResponseEntity<?> handleNoParamsGetPayments(PaymentServiceException ex) {

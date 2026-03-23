@@ -1,7 +1,10 @@
 package com.study.paymentservice.controller;
 
+import com.study.paymentservice.dto.PaymentRequestDto;
+import com.study.paymentservice.dto.PaymentResponseDto;
 import com.study.paymentservice.entity.Payment;
 import com.study.paymentservice.service.PaymentService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,8 +20,8 @@ public class PaymentController {
     private final PaymentService paymentService;
 
     @PostMapping
-    public Payment create(@RequestBody Payment payment) {
-        return paymentService.create(payment);
+    public PaymentResponseDto create(@RequestBody @Valid PaymentRequestDto dto) {
+        return paymentService.create(dto);
     }
 
     @GetMapping
