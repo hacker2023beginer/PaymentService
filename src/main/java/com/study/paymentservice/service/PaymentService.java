@@ -85,4 +85,14 @@ public class PaymentService {
                 .map(Payment::getPaymentAmount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
+
+    public Payment getById(String orderId){
+        Payment payment = paymentRepository.getByOrderId(orderId);
+
+        if (payment == null) {
+            throw new PaymentServiceException("Payment not found for orderId: " + orderId);
+        }
+
+        return payment;
+    }
 }
