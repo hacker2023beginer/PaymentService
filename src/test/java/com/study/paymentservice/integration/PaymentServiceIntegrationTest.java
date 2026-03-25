@@ -41,7 +41,7 @@ class PaymentServiceIntegrationTest {
 
     @DynamicPropertySource
     static void setupProps(DynamicPropertyRegistry registry) {
-        registry.add("spring.data.mongodb.uri", mongo::getReplicaSetUrl);
+        registry.add("spring.mongodb.uri", mongo::getReplicaSetUrl);
         registry.add("spring.kafka.bootstrap-servers", kafka::getBootstrapServers);
         registry.add("random.service.url", () -> "http://localhost:8089");
     }
