@@ -23,6 +23,9 @@ public class RandomNumberClient {
         } catch (RestClientException ex) {
             throw new RandomNumberClientException("Random number API error:", ex.getCause());
         }
+        if (response == null) {
+            throw new RandomNumberClientException("Random number API return null obj");
+        }
         return response[0];
     }
 }

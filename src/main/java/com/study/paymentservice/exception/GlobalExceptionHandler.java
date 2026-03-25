@@ -30,13 +30,4 @@ public class GlobalExceptionHandler {
                 "error", message
         );
     }
-
-    private Map<String, Object> error(HttpStatus status, String message, String key, Object value) {
-        return Map.of(
-                "timestamp", LocalDateTime.now(),
-                "status", status.value(),
-                "error", message,
-                key, value
-        );
-    }
 }
