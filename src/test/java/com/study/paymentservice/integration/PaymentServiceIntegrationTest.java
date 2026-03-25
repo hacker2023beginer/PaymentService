@@ -2,7 +2,6 @@ package com.study.paymentservice.integration;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.study.paymentservice.client.RandomNumberClient;
-import com.study.paymentservice.dto.PaymentRequestDto;
 import com.study.paymentservice.entity.Payment;
 import com.study.paymentservice.repository.PaymentRepository;
 import org.junit.jupiter.api.*;
@@ -23,7 +22,6 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -66,7 +64,6 @@ class PaymentServiceIntegrationTest {
         paymentRepository.deleteAll();
     }
 
-    // ---------------- CREATE ----------------
     @Autowired
     private RandomNumberClient randomNumberClient;
 
@@ -84,7 +81,6 @@ class PaymentServiceIntegrationTest {
         assertEquals(42, result);
     }
 
-    // ---------------- GET PAYMENTS ----------------
     @Test
     void getPayments_byUserId_shouldReturnData() {
         Payment payment = Payment.builder()
@@ -101,7 +97,6 @@ class PaymentServiceIntegrationTest {
         assertEquals(1, result.size());
     }
 
-    // ---------------- SUM ----------------
     @Test
     void getUserSum_shouldCalculateCorrectly() {
         Instant now = Instant.now();
