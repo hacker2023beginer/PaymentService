@@ -11,6 +11,10 @@ jobs:
     name: Build, Test & Docker Image
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+      packages: write
+
     env:
       DOCKER_IMAGE_NAME: payment-service
       DOCKER_REGISTRY: ghcr.io
@@ -54,5 +58,5 @@ jobs:
 
       - name: Push Docker image
         run: |
-          docker tag $DOCKER_IMAGE_NAME:$DOCKER_TAG $DOCKER_REGISTRY/$REPO_LOWER/$DOCKER_IMAGE_NAME:$DOCKER_TAG
-          docker push $DOCKER_REGISTRY/$REPO_LOWER/$DOCKER_IMAGE_NAME:$DOCKER_TAG
+          docker tag $DOCKER_IMAGE_NAME:$DOCKER_TAG $DOCKER_REGISTRY/$REPO_LOWER:$DOCKER_TAG
+          docker push $DOCKER_REGISTRY/$REPO_LOWER:$DOCKER_TAG
