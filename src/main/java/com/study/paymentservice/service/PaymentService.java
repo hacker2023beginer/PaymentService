@@ -4,8 +4,10 @@ import com.study.paymentservice.client.RandomNumberClient;
 import com.study.paymentservice.dto.PaymentRequestDto;
 import com.study.paymentservice.dto.PaymentResponseDto;
 import com.study.paymentservice.entity.Payment;
+import com.study.paymentservice.kafka.event.PaymentEvent;
 import com.study.paymentservice.exception.PaymentServiceException;
 import com.study.paymentservice.mapper.PaymentMapper;
+import com.study.paymentservice.kafka.producer.PaymentProducer;
 import com.study.paymentservice.repository.PaymentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,7 @@ public class PaymentService {
     private final PaymentMapper mapper;
     private final RandomNumberClient randomClient;
     private final PaymentRepository paymentRepository;
+    private final PaymentProducer producer;
 
     public PaymentResponseDto create(PaymentRequestDto requestDto) {
         Payment payment = mapper.toEntity(requestDto);
@@ -39,6 +42,14 @@ public class PaymentService {
 
         Payment saved = paymentRepository.save(payment);
 
+        PaymentEvent event = PaymentEvent.builder()
+                .paymentId(saved.getId())
+                .orderId(saved.getOrderId())
+                .userId(saved.getUserId())
+                .status(saved.getStatus())
+                .build();
+
+        producer.send(event);
         return mapper.toDto(saved);
     }
 
@@ -73,5 +84,15 @@ public class PaymentService {
                 .stream()
                 .map(Payment::getPaymentAmount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public Payment getById(String orderId){
+        Payment payment = paymentRepository.getByOrderId(orderId);
+
+        if (payment == null) {
+            throw new PaymentServiceException("Payment not found for orderId: " + orderId);
+        }
+
+        return payment;
     }
 }

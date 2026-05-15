@@ -23,4 +23,6 @@ public interface PaymentRepository extends MongoRepository<Payment, String> {
             Instant start,
             Instant end
     );
+
+    Payment getByOrderId(String orderId);
 }

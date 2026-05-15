@@ -1,11 +1,15 @@
 package com.study.paymentservice.dto;
 
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;
 
 @Data
+@AllArgsConstructor
+@Builder
 public class PaymentRequestDto {
 
     @NotBlank
