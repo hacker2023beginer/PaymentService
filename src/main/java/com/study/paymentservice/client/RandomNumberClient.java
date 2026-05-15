@@ -7,8 +7,14 @@ import org.springframework.web.client.RestTemplate;
 
 @Component
 public class RandomNumberClient {
+
     private static final String API_URL = "https://www.randomnumberapi.com/api/v1.0/random?min=1&max=100&count=1";
-    private final RestTemplate restTemplate = new RestTemplate();
+
+    private final RestTemplate restTemplate;
+
+    public RandomNumberClient(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
 
     public int getRandomNumber() {
         int[] response = new int[1];
@@ -16,6 +22,9 @@ public class RandomNumberClient {
             response = restTemplate.getForObject(API_URL, int[].class);
         } catch (RestClientException ex) {
             throw new RandomNumberClientException("Random number API error:", ex.getCause());
+        }
+        if (response == null) {
+            throw new RandomNumberClientException("Random number API return null obj");
         }
         return response[0];
     }
